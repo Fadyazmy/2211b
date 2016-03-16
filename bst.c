@@ -13,16 +13,16 @@
 // set member size to ’size’; - DONE
 BStree bstree_ini(int size) {
 
+	BStree bst = (BStree_struct*) malloc( sizeof(BStree_struct));
+	bst->size = size;
+	bst->tree_nodes = (Node*) malloc( sizeof(Node)*(size + 1));
+	bst->is_free = (unsigned char*) malloc( sizeof(unsigned char)*(size + 1));
 
-BStree bst = (BStree_struct*) malloc( sizeof(BStree_struct));
-bst->tree_nodes = (Node*) malloc( sizeof(Node)*(size + 1));
-bst->is_free = (unsigned char*) malloc( sizeof(unsigned char)*(size + 1));
-
-int i;
-for (i =0; i<size+1 ;i++){
-	bst->is_free[i] = 1;
-}
-return bst; 
+	int i;
+	for (i =0; i<size+1 ;i++){
+		bst->is_free[i] = 1;
+	}
+	return bst; 
 }
 
 
@@ -38,7 +38,7 @@ void bstree_insert(BStree bst, int key, char *data) {
 }
 
 
-
+//helper method to insert node in tree
 int bstree_insert_node(BStree bst, int key, char *data, int a){
 
 	//Printing error if the seeked array location is not possible
@@ -49,11 +49,11 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 	// if the seeked location is free then save it 
 	else if (bst->is_free[a] == 1){
 		//dup method
-		bst->tree_nodes->data = data_dup(data);
+		char* new_data = data_dup(data);
 		//Making new node
-		Node node = {key, data};
+		Node node = {key, new_data};
 		//Saving node to tree
-		bst->tree_nodes = &node;
+		bst->tree_nodes[a] = node;
 		//Position in is free array marked filled
 		bst->is_free[a] = 0;
 	}
@@ -61,7 +61,7 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 		return a;//Do nothing already found
 	}
 	//If the holding key is larger than inspection key then go right
-	else if(bst->tree_nodes[a].key > key){
+	else if(bst->tree_nodes[a].key < key){
 		a = a*2 + 1;
 		bstree_insert_node(bst, key, data, a);
 	}
@@ -80,18 +80,21 @@ return 0;
 void bstree_traversal(BStree bst) {
 	//Inorder traversal
 	bstree_traversal_inorder(bst, 1);
+	//printf("Hello");
 }
 
 
 void bstree_traversal_inorder(BStree bst, int index){
 
 	if ( bst->is_free[index]!= 0){
-		//Go left
 
+		//Go left
+		if ( bst->size <= (index*2) && bst->is_free[index*2] != 0)
 		bstree_traversal_inorder(bst, index*2);
 		//Printing key
 		print_node(bst->tree_nodes[index]);
 		//Go right
+if ( bst->size <= (index*2 + 1) && bst->is_free[(index*2 + 1)] != 0)
 		bstree_traversal_inorder(bst, (index*2 + 1));
 	}
 }
