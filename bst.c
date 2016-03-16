@@ -44,20 +44,24 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 	}
 	// if the seeked location is free then save it 
 	else if (bst->is_free[a] == 1){
-		//Make new node, and save it in array
 		//dup method
 		bst->tree_nodes->data = data_dup(data);
+		//Making new node
 		Node node = {key, data};
+		//Saving node to tree
 		bst->tree_nodes = &node;
+		//Position in is free array marked filled
 		bst->is_free[a] = 0;
 	}
 	else if(bst->tree_nodes[a].key == key ){
 		return a;//Do nothing already found
 	}
+	//If the holding key is larger than inspection key then go right
 	else if(bst->tree_nodes[a].key > key){
 		a = a*2 + 1;
 		bstree_insert_node(bst, key, data, a);
 	}
+//Otherwise the holding key is smaller than inspection key then go left
 	else{
 		a = 2*a;
 		bstree_insert_node(bst, key, data, a);
@@ -78,8 +82,11 @@ void bstree_traversal(BStree bst) {
 void bstree_traversal_inorder(BStree bst, int index){
 
 	if ( bst->is_free[index]!= 0){
+		//Go left
 		bstree_traversal_inorder(bst, index*2);
+		//Printing key
 		print("%d",bst->tree_nodes[index].key);
+		//Go right
 		bstree_traversal_inorder(bst, (index*2 + 1));
 	}
 }
@@ -88,8 +95,8 @@ void bstree_traversal_inorder(BStree bst, int index){
 // Input: ’bst’: a binary search tree
 // Effect: all memory used by bst are freed
 void bstree_free(BStree bst) {
-	free(bst->tree_nodes);
-	free(bst->is_free);
-	free(bst);
+	free(bst->tree_nodes); // freeing bst tree_node array
+	free(bst->is_free);//freeing bst is_free array
+	free(bst); //freeing bst
 }
 
