@@ -1,6 +1,7 @@
 // ====== this is a sample main program
 #include <stdio.h>
 #include "bst.h"
+
 int main(void) {
 BStree bst;
 bst = bstree_ini(1000);

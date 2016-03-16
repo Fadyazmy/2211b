@@ -12,9 +12,12 @@
 // set all entries of is_free to 1 - DONE
 // set member size to ’size’; - DONE
 BStree bstree_ini(int size) {
+
+
 BStree bst = (BStree_struct*) malloc( sizeof(BStree_struct));
-bst ->tree_nodes = (Node*) malloc( sizeof(Node)*(size + 1));
+bst->tree_nodes = (Node*) malloc( sizeof(Node)*(size + 1));
 bst->is_free = (unsigned char*) malloc( sizeof(unsigned char)*(size + 1));
+
 int i;
 for (i =0; i<size+1 ;i++){
 	bst->is_free[i] = 1;
@@ -31,6 +34,7 @@ return bst;
 void bstree_insert(BStree bst, int key, char *data) {
 		int a; //initializing local variable, a
 		a = bstree_insert_node(bst, key, data, 1); //starting insert at location 1 of array
+
 }
 
 
@@ -83,6 +87,7 @@ void bstree_traversal_inorder(BStree bst, int index){
 
 	if ( bst->is_free[index]!= 0){
 		//Go left
+
 		bstree_traversal_inorder(bst, index*2);
 		//Printing key
 		print_node(bst->tree_nodes[index]);

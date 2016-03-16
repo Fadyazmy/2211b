@@ -6,7 +6,7 @@
 // Input: ’node’: a node
 // Effect: node.key is printed and then the node.data is printed
 void print_node(Node node) {
-	printf("Key: %d Data: %s\n", node.key, node.data);
+	printf("Key: %d Data: %c\n", node.key, *node.data);
 }
 
 // Input: ’data’: a string ends with ’\0’
