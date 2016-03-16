@@ -90,13 +90,13 @@ void bstree_traversal_inorder(BStree bst, int index){
 	if ( bst->is_free[index] == 0){
 		//printf("hello2");
 		//Go left
-		if ( bst->size <= (index*2) && bst->is_free[index*2] == 0)
+		if ( bst->size >= (index*2) && bst->is_free[index*2] == 0)
 		bstree_traversal_inorder(bst, index*2);
 		//Printing key
 		//printf("hello3");
 		print_node(bst->tree_nodes[index]);
 		//Go right
-if ( bst->size <= (index*2 + 1) && bst->is_free[(index*2 + 1)] == 0)
+if ( bst->size >= (index*2 + 1) && bst->is_free[(index*2 + 1)] == 0)
 		bstree_traversal_inorder(bst, (index*2 + 1));
 	}
 }
