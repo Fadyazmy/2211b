@@ -66,7 +66,7 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 		a = 2*a;
 		bstree_insert_node(bst, key, data, a);
 	}
-
+return 0;
 }
 
 
@@ -75,7 +75,7 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 // Effect: print all the nodes in bst using in order traversal
 void bstree_traversal(BStree bst) {
 	//Inorder traversal
-	bstree_traversal_inorder(bst, bst->tree_nodes);
+	bstree_traversal_inorder(bst, 1);
 }
 
 
@@ -85,7 +85,7 @@ void bstree_traversal_inorder(BStree bst, int index){
 		//Go left
 		bstree_traversal_inorder(bst, index*2);
 		//Printing key
-		print("%d",bst->tree_nodes[index].key);
+		print_node(bst->tree_nodes[index]);
 		//Go right
 		bstree_traversal_inorder(bst, (index*2 + 1));
 	}

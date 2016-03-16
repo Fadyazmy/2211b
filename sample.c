@@ -4,7 +4,6 @@
 int main(void) {
 BStree bst;
 bst = bstree_ini(1000);
-4
 bstree_insert(bst, 6, "correct");
 bstree_insert(bst, 3, "is");
 bstree_insert(bst, 9, "output");
