@@ -12,12 +12,12 @@
 // set all entries of is_free to 1 - DONE
 // set member size to ’size’; - DONE
 BStree bstree_ini(int size) {
-BStree bst = (BStree_struct) malloc( sizeof(BStree_struct));
-bst ->tree_node = (Node*) malloc( sizeof(Node)*(size + 1));
+BStree bst = (BStree_struct*) malloc( sizeof(BStree_struct));
+bst ->tree_nodes = (Node*) malloc( sizeof(Node)*(size + 1));
 bst->is_free = (unsigned char*) malloc( sizeof(unsigned char)*(size + 1));
 int i;
-for (i =0; a<size+1 ;a++){
-	bst->is_free[a] = 1;
+for (i =0; i<size+1 ;i++){
+	bst->is_free[i] = 1;
 }
 return bst; 
 }
@@ -38,7 +38,7 @@ void bstree_insert(BStree bst, int key, char *data) {
 int bstree_insert_node(BStree bst, int key, char *data, int a){
 
 	//Printing error if the seeked array location is not possible
-	if (a>BStree->size){
+	if (a>bst->size){
 		printf("Array out of bound error\n");
 		return a;
 	}
@@ -46,15 +46,15 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 	else if (bst->is_free[a] == 1){
 		//Make new node, and save it in array
 		//dup method
-		bst->data = data_dup(data);
+		bst->tree_nodes->data = data_dup(data);
 		Node node = {key, data};
-		bst->tree_node = node;
+		bst->tree_nodes = &node;
 		bst->is_free[a] = 0;
 	}
-	else if(bst->tree_node[a].key == key ){
+	else if(bst->tree_nodes[a].key == key ){
 		return a;//Do nothing already found
 	}
-	else if(bst->tree_node[a].key > key){
+	else if(bst->tree_nodes[a].key > key){
 		a = a*2 + 1;
 		bstree_insert_node(bst, key, data, a);
 	}
@@ -71,16 +71,16 @@ int bstree_insert_node(BStree bst, int key, char *data, int a){
 // Effect: print all the nodes in bst using in order traversal
 void bstree_traversal(BStree bst) {
 	//Inorder traversal
-	bstree_traversal_inorder(bst, bst->tree_node);
+	bstree_traversal_inorder(bst, bst->tree_nodes);
 }
 
 
-void bstree_traversal_inorder(Bstree bst, int index){
+void bstree_traversal_inorder(BStree bst, int index){
 
 	if ( bst->is_free[index]!= 0){
-		bstree_traversal(bst, index*2);
+		bstree_traversal_inorder(bst, index*2);
 		print("%d",bst->tree_nodes[index].key);
-		bstree_traversal(bst, index*2 + 1);
+		bstree_traversal_inorder(bst, (index*2 + 1));
 	}
 }
 
@@ -88,7 +88,7 @@ void bstree_traversal_inorder(Bstree bst, int index){
 // Input: ’bst’: a binary search tree
 // Effect: all memory used by bst are freed
 void bstree_free(BStree bst) {
-	free(bst->tree_node);
+	free(bst->tree_nodes);
 	free(bst->is_free);
 	free(bst);
 }
